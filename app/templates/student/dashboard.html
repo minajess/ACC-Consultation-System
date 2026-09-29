@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard{% endblock %}
+{% block content %}
+<h3 class="mb-4">Welcome, {{ current_user.display_name }}</h3>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <div class="card stat-card bg-brand-1"><div class="card-body">
+      {% if upcoming %}
+        <div class="small text-uppercase">Upcoming Consultation</div>
+        <div class="fw-bold">{{ upcoming.requested_date.strftime('%b %d, %Y') }} at {{ upcoming.requested_time.strftime('%I:%M %p') }}</div>
+        <div>with Dr. {{ upcoming.expert.full_name }}</div>
+      {% else %}
+        <div class="small text-uppercase">Upcoming Consultation</div>
+        <div class="fw-bold">None scheduled</div>
+      {% endif %}
+    </div></div>
+  </div>
+  <div class="col-md-4">
+    <div class="card stat-card bg-brand-3"><div class="card-body">
+      <div class="stat-value">{{ pending_count }}</div>
+      <div>Pending Requests</div>
+    </div></div>
+  </div>
+  <div class="col-md-4">
+    <div class="card stat-card bg-brand-2"><div class="card-body">
+      <a href="{{ url_for('student.request_consultation') }}" class="stretched-link text-white text-decoration-none">
+        <div class="stat-value"><i class="bi bi-calendar-plus"></i></div>
+        <div>Request a New Consultation</div>
+      </a>
+    </div></div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-7">
+    <div class="card">
+      <div class="card-header bg-white fw-semibold">Recent Consultation History</div>
+      <div class="table-responsive">
+        <table class="table mb-0 align-middle">
+          <thead class="table-light"><tr><th>Date</th><th>Expert</th><th>Type</th><th>Status</th></tr></thead>
+          <tbody>
+            {% for c in history %}
+            <tr>
+              <td>{{ c.requested_date.strftime('%b %d, %Y') }}</td>
+              <td>Dr. {{ c.expert.full_name }}</td>
+              <td>{{ c.consultation_type }}</td>
+              <td><span class="badge {{ c.status_badge_class }}">{{ c.status.title() }}</span></td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4" class="text-center text-muted py-4">No consultations yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-5">
+    <div class="card">
+      <div class="card-header bg-white fw-semibold">Recent Notifications</div>
+      <ul class="list-group list-group-flush">
+        {% for n in notifications %}
+        <li class="list-group-item {{ 'fw-semibold' if not n.is_read else '' }}">
+          {{ n.message }}
+          <div class="text-muted small">{{ n.created_at.strftime('%b %d, %Y %I:%M %p') }}</div>
+        </li>
+        {% else %}
+        <li class="list-group-item text-center text-muted py-4">No notifications yet.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

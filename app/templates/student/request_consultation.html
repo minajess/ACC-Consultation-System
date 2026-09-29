@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Request a Consultation{% endblock %}
+{% block content %}
+<h3 class="mb-4">Request a Consultation</h3>
+
+<div class="card" style="max-width: 640px;">
+  <div class="card-body">
+    <form method="POST" novalidate>
+      {{ form.hidden_tag() }}
+
+      <div class="mb-3">
+        {{ form.expert_id.label(class="form-label") }}
+        {{ form.expert_id(class="form-select", id="expert_id") }}
+        <div class="form-text">Choosing a different expert reloads the page to show their open slots.</div>
+      </div>
+
+      <div class="mb-3">
+        {{ form.availability_id.label(class="form-label") }}
+        {% if form.availability_id.choices %}
+          {{ form.availability_id(class="form-select" + (" is-invalid" if form.availability_id.errors else "")) }}
+        {% else %}
+          <select class="form-select" disabled><option>No open slots for this expert</option></select>
+        {% endif %}
+        {% for e in form.availability_id.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+      </div>
+
+      <div class="mb-3">
+        {{ form.consultation_type.label(class="form-label") }}
+        {{ form.consultation_type(class="form-select") }}
+      </div>
+
+      <div class="mb-3">
+        {{ form.reason.label(class="form-label") }}
+        {{ form.reason(class="form-control" + (" is-invalid" if form.reason.errors else ""), rows=4, placeholder="Briefly describe your concern...") }}
+        {% for e in form.reason.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+      </div>
+
+      <button type="submit" class="btn btn-success" {{ 'disabled' if not form.availability_id.choices }}>Submit Request</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

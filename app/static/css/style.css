@@ -1,0 +1,64 @@
+:root {
+  --brand-primary: #0b5d4a;
+  --brand-primary-dark: #073d31;
+  --brand-accent: #d99a2b;
+}
+
+body {
+  background-color: #f4f7f6;
+}
+
+.app-navbar {
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark));
+}
+
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark));
+  padding: 2rem 1rem;
+}
+
+.auth-card {
+  max-width: 480px;
+  width: 100%;
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.25);
+}
+
+.auth-card.wide {
+  max-width: 760px;
+}
+
+.stat-card {
+  border: none;
+  border-radius: 0.75rem;
+  color: #fff;
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.08);
+}
+
+.stat-card .stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.bg-brand-1 { background: linear-gradient(135deg, #0b5d4a, #0e7a5f); }
+.bg-brand-2 { background: linear-gradient(135deg, #1c6ea4, #2589cc); }
+.bg-brand-3 { background: linear-gradient(135deg, #d99a2b, #e0ad4f); }
+.bg-brand-4 { background: linear-gradient(135deg, #6c757d, #495057); }
+.bg-brand-5 { background: linear-gradient(135deg, #b03a2e, #cb4335); }
+
+.card {
+  border-radius: 0.75rem;
+}
+
+.table thead th {
+  white-space: nowrap;
+}
+
+.badge {
+  font-weight: 500;
+}

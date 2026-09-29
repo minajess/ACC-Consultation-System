@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Medical Expert Dashboard{% endblock %}
+{% block content %}
+<h3 class="mb-4">Welcome, {{ current_user.display_name }}</h3>
+
+<div class="row g-3 mb-4">
+  <div class="col-6 col-md-3">
+    <div class="card stat-card bg-brand-1"><div class="card-body">
+      <div class="stat-value">{{ todays_consultations|length }}</div>
+      <div>Today's Consultations</div>
+    </div></div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="card stat-card bg-brand-3"><div class="card-body">
+      <div class="stat-value">{{ pending|length }}</div>
+      <div>Pending Requests</div>
+    </div></div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="card stat-card bg-brand-2"><div class="card-body">
+      <div class="stat-value">{{ upcoming|length }}</div>
+      <div>Upcoming</div>
+    </div></div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="card stat-card bg-brand-4"><div class="card-body">
+      <div class="stat-value">{{ completed_count }}</div>
+      <div>Completed</div>
+    </div></div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header bg-white fw-semibold d-flex justify-content-between">
+        <span>Today's Schedule</span>
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for c in todays_consultations %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <div class="fw-semibold">{{ c.requested_time.strftime('%I:%M %p') }} — {{ c.student.full_name }}</div>
+            <div class="text-muted small">{{ c.consultation_type }}</div>
+          </div>
+          <a href="{{ url_for('medical.consultation_detail', consultation_id=c.id) }}" class="btn btn-sm btn-outline-primary">View</a>
+        </li>
+        {% else %}
+        <li class="list-group-item text-center text-muted py-4">No consultations scheduled for today.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header bg-white fw-semibold d-flex justify-content-between">
+        <span>Pending Requests</span>
+        <a href="{{ url_for('medical.requests_list') }}" class="small">View all</a>
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for c in pending %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <div class="fw-semibold">{{ c.requested_date.strftime('%b %d') }} — {{ c.student.full_name }}</div>
+            <div class="text-muted small">{{ c.consultation_type }}</div>
+          </div>
+          <a href="{{ url_for('medical.consultation_detail', consultation_id=c.id) }}" class="btn btn-sm btn-outline-warning">Review</a>
+        </li>
+        {% else %}
+        <li class="list-group-item text-center text-muted py-4">No pending requests.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

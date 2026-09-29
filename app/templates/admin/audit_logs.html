@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Audit Logs{% endblock %}
+{% block content %}
+<h3 class="mb-3">System Audit Logs</h3>
+
+<form class="row g-2 mb-3" method="get">
+  <div class="col-auto flex-grow-1">
+    <input type="text" name="action" value="{{ action }}" class="form-control" placeholder="Filter by action (e.g. login, create_student)...">
+  </div>
+  <div class="col-auto">
+    <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i> Filter</button>
+  </div>
+</form>
+
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr><th>When</th><th>User</th><th>Action</th><th>Description</th><th>IP Address</th></tr>
+      </thead>
+      <tbody>
+        {% for log in logs %}
+        <tr>
+          <td>{{ log.created_at.strftime('%b %d, %Y %I:%M %p') }}</td>
+          <td>{{ log.actor.email if log.actor else 'System' }}</td>
+          <td><span class="badge bg-secondary">{{ log.action }}</span></td>
+          <td>{{ log.description }}</td>
+          <td class="text-muted small">{{ log.ip_address or '—' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="text-center text-muted py-4">No matching log entries.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<p class="text-muted small mt-2">Showing the most recent 300 matching entries.</p>
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}Student Registration — Abuyog Community College Consultation System{% endblock %}
+{% block content %}
+<div class="auth-wrapper">
+  <div class="card auth-card wide">
+    <div class="card-body p-4 p-md-5">
+      <div class="text-center mb-4">
+        <i class="bi bi-mortarboard display-5 text-success"></i>
+        <h4 class="mt-2 mb-0">Student Registration</h4>
+        <p class="text-muted">Abuyog Community College Consultation System</p>
+      </div>
+
+      <form method="POST" novalidate>
+        {{ form.hidden_tag() }}
+        <h6 class="text-success text-uppercase small fw-bold mb-3">Personal Information</h6>
+        <div class="row g-3">
+          <div class="col-md-4">
+            {{ form.student_id.label(class="form-label") }}
+            {{ form.student_id(class="form-control" + (" is-invalid" if form.student_id.errors else "")) }}
+            {% for e in form.student_id.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+          </div>
+          <div class="col-md-4">
+            {{ form.first_name.label(class="form-label") }}
+            {{ form.first_name(class="form-control" + (" is-invalid" if form.first_name.errors else "")) }}
+            {% for e in form.first_name.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+          </div>
+          <div class="col-md-4">
+            {{ form.middle_name.label(class="form-label") }}
+            {{ form.middle_name(class="form-control") }}
+          </div>
+          <div class="col-md-4">
+            {{ form.last_name.label(class="form-label") }}
+            {{ form.last_name(class="form-control" + (" is-invalid" if form.last_name.errors else "")) }}
+            {% for e in form.last_name.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+          </div>
+          <div class="col-md-4">
+            {{ form.sex.label(class="form-label") }}
+            {{ form.sex(class="form-select") }}
+          </div>
+          <div class="col-md-4">
+            {{ form.date_of_birth.label(class="form-label") }}
+            {{ form.date_of_birth(class="form-control" + (" is-invalid" if form.date_of_birth.errors else ""), type="date") }}
+            {% for e in form.date_of_birth.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+          </div>
+        </div>
+
+        <h6 class="text-success text-uppercase small fw-bold mb-3 mt-4">Contact &amp; Academic Details</h6>
+        <div class="row g-3">
+          <div class="col-md-6">
+            {{ form.contact_number.label(class="form-label") }}
+            {{ form.contact_number(class="form-control" + (" is-invalid" if form.contact_number.errors else "")) }}
+            {% for e in form.contact_number.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+          </div>
+          <div class="col-md-6">
+            {{ form.course.label(class="form-label") }}
+            {{ form.course(class="form-control" + (" is-invalid" if form.course.errors else "")) }}
+            {% for e in form.course.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+          </div>
+          <div class="col-md-4">
+            {{ form.year_level.label(class="form-label") }}
+            {{ form.year_level(class="form-select") }}
+          </div>
+          <div class="col-md-8">
+            {{ form.address.label(class="form-label") }}
+            {{ form.address(class="form-control" + (" is-invalid" if form.address.errors else "")) }}
+            {% for e in form.address.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+          </div>
+          <div class="col-12">
+            {{ form.emergency_contact.label(class="form-label") }}
+            {{ form.emergency_contact(class="form-control" + (" is-invalid" if form.emergency_contact.errors else "")) }}
+            {% for e in form.emergency_contact.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+          </div>
+        </div>
+
+        <h6 class="text-success text-uppercase small fw-bold mb-3 mt-4">Account Credentials</h6>
+        <div class="row g-3">
+          <div class="col-md-12">
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else "")) }}
+            {% for e in form.email.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+          </div>
+          <div class="col-md-6">
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-control" + (" is-invalid" if form.password.errors else "")) }}
+            {% for e in form.password.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+          </div>
+          <div class="col-md-6">
+            {{ form.confirm_password.label(class="form-label") }}
+            {{ form.confirm_password(class="form-control" + (" is-invalid" if form.confirm_password.errors else "")) }}
+            {% for e in form.confirm_password.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-success w-100 mt-4">Create Account</button>
+      </form>
+
+      <p class="text-center text-muted mt-4 mb-0">
+        Already have an account? <a href="{{ url_for('auth.login') }}">Log in</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

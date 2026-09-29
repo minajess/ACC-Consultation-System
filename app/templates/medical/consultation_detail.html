@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Consultation Detail{% endblock %}
+{% block content %}
+<h3 class="mb-4">Consultation Detail</h3>
+
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="card mb-4">
+      <div class="card-header bg-white fw-semibold">Request Information</div>
+      <div class="card-body">
+        <dl class="row mb-0">
+          <dt class="col-sm-4">Student</dt><dd class="col-sm-8">{{ consultation.student.full_name }} ({{ consultation.student.student_id }})</dd>
+          <dt class="col-sm-4">Course</dt><dd class="col-sm-8">{{ consultation.student.course }} &middot; {{ consultation.student.year_level }}</dd>
+          <dt class="col-sm-4">Contact</dt><dd class="col-sm-8">{{ consultation.student.contact_number }}</dd>
+          <dt class="col-sm-4">Date &amp; Time</dt><dd class="col-sm-8">{{ consultation.requested_date.strftime('%b %d, %Y') }} at {{ consultation.requested_time.strftime('%I:%M %p') }}</dd>
+          <dt class="col-sm-4">Type</dt><dd class="col-sm-8">{{ consultation.consultation_type }}</dd>
+          <dt class="col-sm-4">Reason</dt><dd class="col-sm-8">{{ consultation.reason }}</dd>
+          <dt class="col-sm-4">Status</dt><dd class="col-sm-8"><span class="badge {{ consultation.status_badge_class }}">{{ consultation.status.title() }}</span></dd>
+          {% if consultation.rejection_reason %}
+          <dt class="col-sm-4">Rejection Reason</dt><dd class="col-sm-8">{{ consultation.rejection_reason }}</dd>
+          {% endif %}
+          {% if consultation.notes %}
+          <dt class="col-sm-4">Notes</dt><dd class="col-sm-8">{{ consultation.notes }}</dd>
+          {% endif %}
+          {% if consultation.recommendation %}
+          <dt class="col-sm-4">Recommendation</dt><dd class="col-sm-8">{{ consultation.recommendation }}</dd>
+          {% endif %}
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    {% if consultation.status == 'pending' %}
+    <div class="card mb-3">
+      <div class="card-header bg-white fw-semibold">Decision</div>
+      <div class="card-body d-flex gap-2 flex-wrap">
+        <form method="post" action="{{ url_for('medical.approve_consultation', consultation_id=consultation.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-success"><i class="bi bi-check-lg"></i> Approve</button>
+        </form>
+        <button type="button" class="btn btn-outline-danger" data-bs-toggle="collapse" data-bs-target="#rejectPanel">
+          <i class="bi bi-x-lg"></i> Reject
+        </button>
+      </div>
+      <div class="collapse card-body pt-0" id="rejectPanel">
+        <form method="post" action="{{ url_for('medical.reject_consultation', consultation_id=consultation.id) }}">
+          {{ reject_form.hidden_tag() }}
+          {{ reject_form.rejection_reason(class="form-control mb-2", rows=2, placeholder="Reason for rejection...") }}
+          <button type="submit" class="btn btn-danger btn-sm">Confirm Rejection</button>
+        </form>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if consultation.status in ['pending', 'approved'] and reschedule_form.availability_id.choices %}
+    <div class="card mb-3">
+      <div class="card-header bg-white fw-semibold">Reschedule</div>
+      <div class="card-body">
+        <form method="post" action="{{ url_for('medical.reschedule_consultation', consultation_id=consultation.id) }}">
+          {{ reschedule_form.hidden_tag() }}
+          {{ reschedule_form.availability_id(class="form-select mb-2") }}
+          <button type="submit" class="btn btn-outline-secondary btn-sm">Reschedule to Selected Slot</button>
+        </form>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if consultation.status in ['approved', 'rescheduled'] %}
+    <div class="card">
+      <div class="card-header bg-white fw-semibold">Complete Consultation</div>
+      <div class="card-body">
+        <form method="post" action="{{ url_for('medical.complete_consultation', consultation_id=consultation.id) }}">
+          {{ complete_form.hidden_tag() }}
+          <div class="mb-2">
+            {{ complete_form.notes.label(class="form-label") }}
+            {{ complete_form.notes(class="form-control", rows=3) }}
+          </div>
+          <div class="mb-2">
+            {{ complete_form.recommendation.label(class="form-label") }}
+            {{ complete_form.recommendation(class="form-control", rows=2) }}
+          </div>
+          <button type="submit" class="btn btn-success btn-sm">Mark as Completed</button>
+        </form>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if consultation.status in ['completed', 'rejected', 'cancelled'] %}
+      <div class="alert alert-secondary mb-0">This consultation is closed and no further action is available.</div>
+    {% endif %}
+  </div>
+</div>
+
+<a href="{{ url_for('medical.requests_list') }}" class="btn btn-outline-secondary mt-3"><i class="bi bi-arrow-left"></i> Back to Requests</a>
+{% endblock %}

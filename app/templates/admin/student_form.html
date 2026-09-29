@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Add' if mode == 'add' else 'Edit' }} Student{% endblock %}
+{% block content %}
+<h3 class="mb-4">{{ 'Add Student' if mode == 'add' else 'Edit Student — ' + student.full_name }}</h3>
+
+<div class="card">
+  <div class="card-body">
+    <form method="POST" novalidate>
+      {{ form.hidden_tag() }}
+      <div class="row g-3">
+        <div class="col-md-4">
+          {{ form.student_id.label(class="form-label") }}
+          {{ form.student_id(class="form-control" + (" is-invalid" if form.student_id.errors else "")) }}
+          {% for e in form.student_id.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+        </div>
+        <div class="col-md-4">
+          {{ form.first_name.label(class="form-label") }}
+          {{ form.first_name(class="form-control") }}
+        </div>
+        <div class="col-md-4">
+          {{ form.middle_name.label(class="form-label") }}
+          {{ form.middle_name(class="form-control") }}
+        </div>
+        <div class="col-md-4">
+          {{ form.last_name.label(class="form-label") }}
+          {{ form.last_name(class="form-control") }}
+        </div>
+        <div class="col-md-4">
+          {{ form.sex.label(class="form-label") }}
+          {{ form.sex(class="form-select") }}
+        </div>
+        <div class="col-md-4">
+          {{ form.date_of_birth.label(class="form-label") }}
+          {{ form.date_of_birth(class="form-control", type="date") }}
+        </div>
+        <div class="col-md-4">
+          {{ form.contact_number.label(class="form-label") }}
+          {{ form.contact_number(class="form-control") }}
+        </div>
+        <div class="col-md-4">
+          {{ form.course.label(class="form-label") }}
+          {{ form.course(class="form-control") }}
+        </div>
+        <div class="col-md-4">
+          {{ form.year_level.label(class="form-label") }}
+          {{ form.year_level(class="form-select") }}
+        </div>
+        <div class="col-md-6">
+          {{ form.address.label(class="form-label") }}
+          {{ form.address(class="form-control") }}
+        </div>
+        <div class="col-md-6">
+          {{ form.emergency_contact.label(class="form-label") }}
+          {{ form.emergency_contact(class="form-control") }}
+        </div>
+      </div>
+
+      <hr class="my-4">
+      <h6 class="text-uppercase small fw-bold text-muted">Account</h6>
+      <div class="row g-3">
+        <div class="col-md-6">
+          {{ form.email.label(class="form-label") }}
+          {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else "")) }}
+          {% for e in form.email.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+        </div>
+        <div class="col-md-6">
+          {{ form.password.label(class="form-label") }}
+          {{ form.password(class="form-control" + (" is-invalid" if form.password.errors else "")) }}
+          {% for e in form.password.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+        </div>
+        <div class="col-12 form-check ms-2">
+          {{ form.is_active_account(class="form-check-input") }}
+          {{ form.is_active_account.label(class="form-check-label") }}
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <button type="submit" class="btn btn-success">Save</button>
+        <a href="{{ url_for('admin.students') }}" class="btn btn-outline-secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

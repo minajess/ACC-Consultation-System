@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<h3 class="mb-4">Super Admin Dashboard</h3>
+
+<div class="row g-3 mb-4">
+  <div class="col-6 col-md-4 col-lg-2">
+    <div class="card stat-card bg-brand-1"><div class="card-body">
+      <div class="stat-value">{{ stats.total_students }}</div>
+      <div>Total Students</div>
+    </div></div>
+  </div>
+  <div class="col-6 col-md-4 col-lg-2">
+    <div class="card stat-card bg-brand-2"><div class="card-body">
+      <div class="stat-value">{{ stats.total_experts }}</div>
+      <div>Medical Experts</div>
+    </div></div>
+  </div>
+  <div class="col-6 col-md-4 col-lg-2">
+    <div class="card stat-card bg-brand-3"><div class="card-body">
+      <div class="stat-value">{{ stats.pending }}</div>
+      <div>Pending</div>
+    </div></div>
+  </div>
+  <div class="col-6 col-md-4 col-lg-2">
+    <div class="card stat-card bg-brand-1"><div class="card-body">
+      <div class="stat-value">{{ stats.completed }}</div>
+      <div>Completed</div>
+    </div></div>
+  </div>
+  <div class="col-6 col-md-4 col-lg-2">
+    <div class="card stat-card bg-brand-5"><div class="card-body">
+      <div class="stat-value">{{ stats.cancelled }}</div>
+      <div>Cancelled</div>
+    </div></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header bg-white fw-semibold">Recent System Activity</div>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light"><tr><th>When</th><th>User</th><th>Action</th><th>Description</th></tr></thead>
+      <tbody>
+        {% for log in recent_activity %}
+        <tr>
+          <td>{{ log.created_at.strftime('%b %d, %Y %I:%M %p') }}</td>
+          <td>{{ log.actor.email if log.actor else 'System' }}</td>
+          <td><span class="badge bg-secondary">{{ log.action }}</span></td>
+          <td>{{ log.description }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4" class="text-center text-muted py-4">No activity recorded yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
